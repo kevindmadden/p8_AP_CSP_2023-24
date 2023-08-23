@@ -1,0 +1,14 @@
+p {
+    background-color: yellow;
+    color: #59912b;
+}
+
+img {
+    border: 5px solid red;
+    padding: 50px;
+    margin: 50px;
+}
+
+body {
+    border: 5px solid black;
+}
