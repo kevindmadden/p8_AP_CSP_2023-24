@@ -1,12 +1,12 @@
 p {
-    background-color: yellow;
-    color: #59912b;
+    background-color: #fff9f9;
+    color: #111111;
 }
 
 img {
     border: 5px solid red;
-    padding: 50px;
-    margin: 50px;
+    padding: 10px;
+    margin: 10px;
 }
 
 body {
