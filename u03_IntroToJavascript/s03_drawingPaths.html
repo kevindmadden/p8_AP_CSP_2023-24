@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <canvas id="canvas" width="500px" height="500px" style="border: 1px solid black;" tabindex="1" autofocus></canvas>
+    <p id="coordinateValues">Coordinates - x: 0, y: 0</p>
+    <script>
+        //Canvas API: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+        const canvas = document.getElementById("canvas")
+        const ctx = canvas.getContext("2d")
+
+        ctx.beginPath()
+        ctx.moveTo(50,50)
+        ctx.lineTo(450, 450)
+        ctx.lineTo(450,50)
+        ctx.closePath() //ctx.lineTo(50,50)
+
+        ctx.strokeStyle = "#32a8a4"
+        ctx.lineWidth = 10
+        ctx.stroke()
+        ctx.fillStyle = "#8132a8"
+        ctx.fill()
+
+        ctx.beginPath()
+        ctx.moveTo(50,450)
+        ctx.lineTo(50, 300)
+        ctx.lineTo(200, 300)
+        ctx.closePath()
+
+        ctx.stroke()
+
+
+
+
+
+
+
+
+        //Most of the code for the cursor location is below. IMPORTANT: You also need to have the additional <p id="coordinateValues"> tag in your html at the top.
+        let xCoord = 0
+        let yCoord = 0
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            xCoord = event.clientX - rect.left
+            yCoord = event.clientY - rect.top
+            document.getElementById("coordinateValues").innerHTML = "Coordinates - x: "+xCoord+", y: "+yCoord
+        }
+
+        canvas.addEventListener('mousemove', function(e) { getCursorPosition(canvas, e)})
+    </script>
+</head>
+<body></body>
+</html>
