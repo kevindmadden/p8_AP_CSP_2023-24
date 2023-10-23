@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <canvas id="canvas" width="500px" height="500px" style="border: 1px solid black;" tabindex="1" autofocus></canvas>
+    <p id="coordinateValues">Coordinates - x: 0, y: 0</p>
+    <script>
+        //Canvas API: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+        const canvas = document.getElementById("canvas")
+        const ctx = canvas.getContext("2d")
+
+        let xPos = 60
+        let xVel = 200 // px/sec
+
+        let prevTimeStamp = 0
+        window.requestAnimationFrame(gameLoop)
+        function gameLoop(currentTimeStamp) {
+            let timeElapsed = (currentTimeStamp - prevTimeStamp) / 1000
+            prevTimeStamp = currentTimeStamp
+            ctx.clearRect(0, 0, 500, 500)
+            xPos = xPos + xVel*timeElapsed
+
+            //Comparison operators
+            // >  - greater than
+            // >= - greater than or equal to
+            // <  - less than
+            // <= - less than or equal to
+            // === - equal to
+            // !=  - not equal to
+
+            //What will be true of the xPos or yPos when the rectangle is no longer visible on the screen?
+            if(xPos > 500){
+                xVel = xVel * -1
+            }
+
+            /*Task:
+                1. Adjust current if-statement so that the rectangle "bounces" off the right side
+                2. Make it bounce off of left, top, and bottom sides as well
+                3. If you finish, work on making the rectangle grow and shrink in size.
+             */
+
+
+
+            ctx.fillStyle = "black"
+            ctx.fillRect(xPos,30,50,30)
+
+
+
+
+
+
+
+
+            window.requestAnimationFrame(gameLoop)
+        }
+
+
+
+
+
+        //Mouse Input Stuff
+        let xCoord = 0
+        let yCoord = 0
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            xCoord = event.clientX - rect.left
+            yCoord = event.clientY - rect.top
+            document.getElementById("coordinateValues").innerHTML = "Coordinates - x: "+xCoord+", y: "+yCoord
+        }
+
+        canvas.addEventListener('mousemove', function(e) { getCursorPosition(canvas, e)})
+
+        addEventListener('click', (event) => {});
+
+        onclick = (event) => { }
+
+    </script>
+</head>
+<body></body>
+</html>

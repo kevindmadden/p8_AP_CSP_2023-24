@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <canvas id="canvas" width="500px" height="500px" style="border: 1px solid black;" tabindex="1" autofocus></canvas>
+    <p id="coordinateValues">Coordinates - x: 0, y: 0</p>
+    <script>
+        //Canvas API: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+        const canvas = document.getElementById("canvas")
+        const ctx = canvas.getContext("2d")
+
+        /*
+            Q: If you are driving down the highway at 70mph and travel for 2 hours... how far have you traveled?
+            A: 2 hours + 70 mph = 140 miles
+
+            Q: Suppose you have already traveled 60 miles. Then you drive down the highway at 70mph, and travel for 2 hours... how far total have you traveled?
+            A: 60 miles + 140 miles = 200 miles
+
+            Q: What's the difference between speed and velocity?
+            A: Velocity can have a direction (+ as forward, - meaning backward)
+            --
+            Q: If you are a square traveling at 100px/sec and travel for 2 sec, how far have you traveled?
+            A: 100px/sec * 2 sec = 200px
+
+            The amount of time is always going to be right around (1/60th) of a second. So we are aiming for 60 frames per second in our animations.
+         */
+
+        let xPos = 60
+        let xVel = 100 // px/sec
+
+
+        let prevTimeStamp = 0
+        window.requestAnimationFrame(gameLoop)
+        function gameLoop(currentTimeStamp) {
+            let timeElapsed = (currentTimeStamp - prevTimeStamp) / 1000
+            prevTimeStamp = currentTimeStamp
+            ctx.fillStyle = "white"
+            ctx.fillRect(0,0,500,500)
+
+            //xPos is 60 is the first frame
+            //the second frame: xPos = 60 + 100*(.0167)
+            //                  xPos = 61.67
+            xPos = xPos + xVel*timeElapsed
+            console.log(xPos)
+
+            ctx.fillStyle = "black"
+            ctx.fillRect(xPos,30,10,20)
+
+
+            window.requestAnimationFrame(gameLoop)
+        }
+
+
+
+
+
+        //Mouse Input Stuff
+        let xCoord = 0
+        let yCoord = 0
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            xCoord = event.clientX - rect.left
+            yCoord = event.clientY - rect.top
+            document.getElementById("coordinateValues").innerHTML = "Coordinates - x: "+xCoord+", y: "+yCoord
+        }
+
+        canvas.addEventListener('mousemove', function(e) { getCursorPosition(canvas, e)})
+
+        addEventListener('click', (event) => {});
+
+        onclick = (event) => { }
+
+    </script>
+</head>
+<body></body>
+</html>
