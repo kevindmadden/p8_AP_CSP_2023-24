@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <canvas id="canvas" width="500px" height="500px" style="border: 1px solid black;" tabindex="1" autofocus></canvas>
+    <p id="coordinateValues">Coordinates - x: 0, y: 0</p>
+    <script>
+        //Canvas API: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+        const canvas = document.getElementById("canvas")
+        const ctx = canvas.getContext("2d")
+
+        function bulletFactory(x, y){
+            let bullet = {
+                xPos: x,
+                yPos: y,
+                radius: 5,
+                yVel: 200,
+            }
+            return bullet
+        }
+
+        let player = {
+            xPos: 250,
+            yPos: 250,
+            width: 20,
+            height: 30,
+            xVel: 0,
+            yVel: 0,
+        }
+
+        let bullets = []
+
+        let prevFrame = {
+            wasSpacePressed: false,
+        }
+        let onClick = false
+        let prevTimeStamp = 0
+        window.requestAnimationFrame(gameLoop)
+        function gameLoop(currentTimeStamp) {
+            let timeElapsed = (currentTimeStamp - prevTimeStamp) / 1000
+            prevTimeStamp = currentTimeStamp
+            ctx.clearRect(0, 0, 500, 500)
+
+            player.xPos = player.xPos + player.xVel * timeElapsed
+
+
+            ctx.fillRect(player.xPos, player.yPos, player.width, player.height)
+
+
+            playerMove()
+            if(!kbInput.space.isPressed && prevFrame.wasSpacePressed){
+                bullets.push( bulletFactory(player.xPos, player.yPos) )
+            }
+
+            for(let bullet of bullets){
+                bullet.yPos = bullet.yPos+bullet.yVel*timeElapsed
+            }
+
+            for(let bullet of bullets){
+                drawCircle(bullet)
+            }
+
+            prevFrame.wasSpacePressed = kbInput.space.isPressed
+            window.requestAnimationFrame(gameLoop)
+        }
+
+        function playerMove(){
+            if(!kbInput.right.isPressed && !kbInput.left.isPressed){
+                player.xVel = 0
+            }
+            if(kbInput.right.isPressed){
+                player.xVel = 200
+            }
+            if(kbInput.left.isPressed){
+                player.xVel = -200
+            }
+            if(kbInput.right.isPressed && kbInput.left.isPressed){
+                player.xVel = 0
+            }
+        }
+
+        function drawCircle(circle){
+            ctx.beginPath()
+            ctx.arc(circle.xPos, circle.yPos, circle.radius, 0, Math.PI*2)
+            ctx.fill()
+            ctx.closePath()
+        }
+
+        function isPointInCircle(xPoint, yPoint, circle){
+            if(Math.sqrt(  Math.pow(circle.xPos - xPoint, 2)  + Math.pow(circle.yPos - yPoint, 2) )  < circle.radius){
+                return true
+            }else{
+                return false
+            }
+        }
+
+        function isCircleInCircle(circle1, circle2){
+            let distanceBetweenCircles = Math.sqrt(Math.pow(circle1.xPos - circle2.xPos, 2 ) + Math.pow(circle1.yPos - circle2.yPos, 2))
+            if(distanceBetweenCircles > circle1.radius + circle2.radius){
+                return false
+            }else{
+                return true
+            }
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Keyboard Input
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+        canvas.addEventListener('keydown', keyHandler)
+        canvas.addEventListener('keyup', keyHandler)
+
+        let kbInput = {
+            left : {
+                value : "ArrowLeft",
+                isPressed: false,
+            },
+            right : {
+                value : "ArrowRight",
+                isPressed: false,
+            },
+            down : {
+                value : "ArrowDown",
+                isPressed: false,
+            },
+            up : {
+                value : "ArrowUp",
+                isPressed: false,
+            },
+            space : {
+                value : " ",
+                isPressed: false,
+            }
+        }
+
+        function keyHandler(event) {
+            event.preventDefault() //prevents the keys that you press from performing their default action in your internet browser (for ex: when you press the down arrow key, the browser window will not scroll down)
+            let type = event.type
+            let isPressed = false
+            if(type==="keydown"){
+                isPressed = true
+            }
+            if(event.key===kbInput.left.value){
+                kbInput.left.isPressed = isPressed
+            }
+            if(event.key===kbInput.right.value){
+                kbInput.right.isPressed = isPressed
+            }
+            if(event.key===kbInput.up.value){
+                kbInput.up.isPressed = isPressed
+            }
+            if(event.key===kbInput.down.value){
+                kbInput.down.isPressed = isPressed
+            }
+            if(event.key===kbInput.space.value){
+                kbInput.space.isPressed = isPressed
+            }
+        }
+
+        //Mouse Input Stuff
+        let xCoord = 0
+        let yCoord = 0
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            xCoord = event.clientX - rect.left
+            yCoord = event.clientY - rect.top
+            document.getElementById("coordinateValues").innerHTML = "Coordinates - x: "+xCoord+", y: "+yCoord
+        }
+
+        canvas.addEventListener('mousemove', function(e) { getCursorPosition(canvas, e)})
+
+        addEventListener('click', (event) => {
+            onClick = true
+        });
+
+    </script>
+</head>
+<body></body>
+</html>

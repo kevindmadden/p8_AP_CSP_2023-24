@@ -11,6 +11,25 @@
         const ctx = canvas.getContext("2d")
 
 
+        /*
+            Numbers - just numbers
+            String - "strings of text"
+            Boolean - true or false
+         */
+
+        let blueberry = {
+            xPos: 50,
+            yPos: 200,
+            radius: 60,
+            xVel: 50,
+        }
+
+        let watermelon = {
+            xPos: 250,
+            yPos: 300,
+            radius: 40,
+        }
+
 
         let prevTimeStamp = 0
         window.requestAnimationFrame(gameLoop)
@@ -19,9 +38,21 @@
             prevTimeStamp = currentTimeStamp
             ctx.clearRect(0, 0, 500, 500)
 
+            blueberry.xPos = blueberry.xPos + blueberry.xVel*timeElapsed
 
+            if(isPointCollidingWithCircle(xCoord, yCoord, blueberry)){ //if(isPointCollidingWithCircle(xCoord, yCoord, blueberry)===true){
+                ctx.fillStyle = "blue"
+            }else{
+                ctx.fillStyle = "black"
+            }
+            drawCircle(blueberry)
 
-
+            if(isPointCollidingWithCircle(xCoord, yCoord, watermelon)){
+                ctx.fillStyle = "green"
+            }else{
+                ctx.fillStyle = "black"
+            }
+            drawCircle(watermelon)
 
 
 
@@ -30,6 +61,21 @@
             window.requestAnimationFrame(gameLoop)
         }
 
+        function drawCircle(circle){
+            ctx.beginPath()
+            ctx.arc(circle.xPos, circle.yPos, circle.radius, 0, Math.PI*2)
+            ctx.closePath()
+            ctx.fill()
+        }
+
+        function isPointCollidingWithCircle(xPoint, yPoint, circle){
+            if(Math.sqrt(  Math.pow( circle.xPos - xPoint, 2)  + Math.pow( circle.yPos - yPoint, 2) ) < circle.radius){
+                return true
+            }else{
+                return false
+            }
+
+        }
 
 
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <canvas id="canvas" width="500px" height="500px" style="border: 1px solid black;" tabindex="1" autofocus></canvas>
+    <p id="coordinateValues">Coordinates - x: 0, y: 0</p>
+    <script>
+        //Canvas API: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+        const canvas = document.getElementById("canvas")
+        const ctx = canvas.getContext("2d")
+
+
+        let blueberry = {
+            xPos: 250,
+            yPos: 200,
+            radius: 10,
+        }
+        let score = 0
+
+        let prevTimeStamp = 0
+        window.requestAnimationFrame(gameLoop)
+        function gameLoop(currentTimeStamp) {
+            let timeElapsed = (currentTimeStamp - prevTimeStamp) / 1000
+            prevTimeStamp = currentTimeStamp
+            ctx.clearRect(0, 0, 500, 500)
+
+
+            ctx.font = "50px serif";
+            ctx.fillText(score, 50, 90);
+
+            drawCircle(blueberry)
+            if( isPointInCircle(xCoord, yCoord, blueberry) === true ){
+                blueberry.xPos = Math.random()*500
+                blueberry.yPos = Math.random()*500
+                score = score + 1
+                console.log(score)
+            }
+
+
+
+            window.requestAnimationFrame(gameLoop)
+        }
+
+        function drawCircle(circle){
+            ctx.beginPath()
+            ctx.arc(circle.xPos, circle.yPos, circle.radius, 0, Math.PI*2)
+            ctx.fill()
+            ctx.closePath()
+        }
+
+        function isPointInCircle(xPoint, yPoint, circle){
+            if(Math.sqrt(  Math.pow(circle.xPos - xPoint, 2)  + Math.pow(circle.yPos - yPoint, 2) )  < circle.radius){
+                return true
+            }else{
+                return false
+            }
+        }
+
+        //Mouse Input Stuff
+        let xCoord = 0
+        let yCoord = 0
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            xCoord = event.clientX - rect.left
+            yCoord = event.clientY - rect.top
+            document.getElementById("coordinateValues").innerHTML = "Coordinates - x: "+xCoord+", y: "+yCoord
+        }
+
+        canvas.addEventListener('mousemove', function(e) { getCursorPosition(canvas, e)})
+
+        addEventListener('click', (event) => {});
+
+        onclick = (event) => { }
+
+    </script>
+</head>
+<body></body>
+</html>
