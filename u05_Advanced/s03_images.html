@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <canvas id="canvas" width="500px" height="500px" style="border: 1px solid black;" tabindex="1" autofocus></canvas>
+  <p id="coordinateValues">Coordinates - x: 0, y: 0</p>
+  <script>
+    //Canvas API: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+    const canvas = document.getElementById("canvas")
+    const ctx = canvas.getContext("2d")
+
+    let testImage = new Image()
+    testImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN8AAADJCAYAAACjdueqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAOuSURBVHhe7d3BbhNJGEbRmJflmXhaiIRZIDn8kKL6utvnbJLNDJluX5XEp8rcvr97Aw735f4VOJj4ICI+iIgPIuKDiL/tfEK32+3+3R5e+XNw8kFEfBARH0TEBxHxQUR8EBEfROx8gWnH2/1CphXRR+IYTj6IiA8i4oOI+CAiPoiIDyLig4id74Hd9+km9QuxAx7DyQcR8UFEfBARH0TEBxHxQUR8EHnJna++T3d2dsD/w8kHEfFBRHwQER9ExAcR8UFEfBCx8z1gpVpjB/w7Tj6IiA8i4oOI+CAiPoiIDyLig4jf2/nA7t/b+eoP3A74k5MPIuKDiPggIj6IiA8i4oOI+CDiPt8Dhs/Wq+yATj6IiA8i4oOI+CAiPoiIDyLig8gldz473rVdZQd08kFEfBARH0TEBxHxQUR8EBEfROx8XM5ZdkAnH0TEBxHxQUR8EBEfRMQHEfFB5JQ7nx2PFc+yAzr5ICI+iIgPIuKDiPggIj6IiA8i4oOI+CAiPoiIDyLig4j4ICI+iIgPIg/v80335VZN96Ve/b7e3qc/e/bnu/v5uM8HFyc+iIgPIuKDiPggIj6IiA8iW3a+1R1vcvWdb1LvgJPV9/P0/33/aQd08kFEfBARH0TEBxHxQUR8EBEfRD71/+fbfd9vYuf7s9Udqn6/u01PZ/fz/cXJBxHxQUR8EBEfRMQHEfFBRHwQsfOd0FE71Eem9797Z5z+/eM/f//6kaOer5MPIuKDiPggIj6IiA8i4oOI+CDyqZ1v1epOePgPfDJH7VQfWX6/u3fC+9eP2Png4sQHEfFBRHwQER9ExAcR8UEkuc83/ZGrOw1/tvb23p//t/s3m9y+3r/5pNXPh50PLk58EBEfRMQHEfFBRHwQER9Ekvt8EzvfXuOOtXnH223aCafPj50PLk58EBEfRMQHEfFBRHwQER9E7HyF+JGPz3fY+Zbv28U74vLPb+eDcxMfRMQHEfFBRHwQER9ExAeRp9z5Jk+/A57vkf5mdQecrO5sq6a34z4fXJz4ICI+iIgPIuKDiPggIj6InHLnm2zfAa/3yP7J9HxXLX8kh5/vqB1v4uSDiPggIj6IiA8i4oOI+CAiPohccuebjDvgi+94Z3eW9+vkg4j4ICI+iIgPIuKDiPggIj6IvOTON1m9r+aR7nWVndbJBxHxQUR8EBEfRMQHEfFBRHwQsfNtsPv3Wr66q3xknXwQER9ExAcR8UFEfBARH0TEBxE7H0ScfBARHyTe3n4APQH5FpPp1ngAAAAASUVORK5CYII="
+
+
+    let prevTimeStamp = 0
+    window.requestAnimationFrame(gameLoop)
+    function gameLoop(currentTimeStamp) {
+      let timeElapsed = (currentTimeStamp - prevTimeStamp) / 1000
+      prevTimeStamp = currentTimeStamp
+      ctx.clearRect(0, 0, 500, 500)
+
+      ctx.drawImage(testImage, 250, 250, testImage.width*.5, testImage.height*.5)
+
+
+
+
+
+
+
+      window.requestAnimationFrame(gameLoop)
+    }
+
+
+
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Keyboard Input
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    canvas.addEventListener('keydown', keyHandler)
+    canvas.addEventListener('keyup', keyHandler)
+
+    let kbInput = {
+      left : {
+        value : "ArrowLeft",
+        isPressed: false,
+      },
+      right : {
+        value : "ArrowRight",
+        isPressed: false,
+      },
+      down : {
+        value : "ArrowDown",
+        isPressed: false,
+      },
+      up : {
+        value : "ArrowUp",
+        isPressed: false,
+      },
+    }
+
+    function keyHandler(event) {
+      event.preventDefault() //prevents the keys that you press from performing their default action in your internet browser (for ex: when you press the down arrow key, the browser window will not scroll down)
+      let type = event.type
+      let isPressed = false
+      if(type==="keydown"){
+        isPressed = true
+      }
+      if(event.key===kbInput.left.value){
+        kbInput.left.isPressed = isPressed
+      }
+      if(event.key===kbInput.right.value){
+        kbInput.right.isPressed = isPressed
+      }
+      if(event.key===kbInput.up.value){
+        kbInput.up.isPressed = isPressed
+      }
+      if(event.key===kbInput.down.value){
+        kbInput.down.isPressed = isPressed
+      }
+    }
+
+    //Collision Detection
+    function didCirclesCollide(circle1, circle2){
+      let distance = Math.sqrt(Math.pow((circle1.xPos-circle2.xPos),2) + Math.pow((circle1.yPos-circle2.yPos),2))
+      if(distance < circle1.radius+circle2.radius){
+        return true
+      }
+      return false
+    }
+
+    function didRectanglesCollide(rect1, rect2){ //https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+      if (rect1.xPos < rect2.xPos + rect2.width &&
+              rect1.xPos + rect1.width > rect2.xPos &&
+              rect1.yPos < rect2.yPos + rect2.height &&
+              rect1.yPos + rect1.height > rect2.yPos) {
+        return true
+      }else{
+        return false
+      }
+    }
+
+    function didRectangleCircleCollide(rect, circle){ //https://stackoverflow.com/questions/21089959/detecting-collision-of-rectangle-with-circle
+      let rect_x = rect.xPos
+      let rect_y = rect.yPos
+      let rect_w = rect.width
+      let rect_h = rect.height
+      let circle_x = circle.xPos
+      let circle_y = circle.yPos
+      let circle_r = circle.radius
+      let distX = Math.abs(circle_x - rect_x-rect_w/2);
+      let distY = Math.abs(circle_y - rect_y-rect_h/2);
+
+      if (distX > (rect_w/2 + circle_r)) { return false; }
+      if (distY > (rect_h/2 + circle_r)) { return false; }
+
+      if (distX <= (rect_w/2)) { return true; }
+      if (distY <= (rect_h/2)) { return true; }
+
+      let dx=distX-rect_w/2;
+      let dy=distY-rect_h/2;
+      return (dx*dx+dy*dy<=(circle_r*circle_r));
+    }
+
+
+
+    //Mouse Input Stuff
+    let xCoord = 0
+    let yCoord = 0
+    function getCursorPosition(canvas, event) {
+      const rect = canvas.getBoundingClientRect()
+      xCoord = event.clientX - rect.left
+      yCoord = event.clientY - rect.top
+      document.getElementById("coordinateValues").innerHTML = "Coordinates - x: "+xCoord+", y: "+yCoord
+    }
+
+    canvas.addEventListener('mousemove', function(e) { getCursorPosition(canvas, e)})
+
+    addEventListener('click', (event) => {});
+
+    onclick = (event) => { }
+
+  </script>
+</head>
+<body></body>
+</html>
